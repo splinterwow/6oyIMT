@@ -1,0 +1,35 @@
+.container {
+  max-width: 100%;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.navbar {
+  background-color: #f4f4f9; /* Light gray background */
+  padding: 12px 24px; /* Padding around the Navbar */
+  display: flex;
+  align-items: center; /* Center items vertically */
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+  position: fixed; /* Fixed at the top */
+  top: 0;
+  width: 100%;
+  z-index: 1000; /* Ensures Navbar is above other content */
+}
+
+.navbar h1 {
+  margin-left: 100px;
+  color: #333; /* Dark text color for contrast */
+  font-weight: 700;
+  font-size: 32px;
+  letter-spacing: 1px; /* Slight letter spacing */
+  cursor: pointer; /* Pointer cursor for better user experience */
+  transition: color 0.3s ease; /* Smooth color transition */
+}
+
+.navbar h1:hover {
+  color: #4e4e4e; /* Color change on hover */
+}
+
+.navbar a {
+  text-decoration: none; /* Remove underline from links */
+}
