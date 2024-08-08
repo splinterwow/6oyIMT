@@ -15,7 +15,6 @@ function Login() {
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (token) {
-      console.log("Token mavjud, home page'ga yo'naltirilmoqda");
       navigate("/");
     }
   }, [navigate]);
@@ -42,10 +41,9 @@ function Login() {
 
   function handleLogin(event) {
     event.preventDefault();
-    console.log("Login jarayoni boshlandi");
 
     if (!validate()) {
-      console.log("Validatsiya muvaffaqiyatsiz");
+    toast.error("Validatsiya muvaffaqiyatsiz", { duration: 700 });
       return;
     }
 
@@ -56,7 +54,7 @@ function Login() {
       password: passwordRef.current.value,
     };
 
-    console.log("Login ma'lumotlari:", logindata);
+  
 
     fetch("https://api.escuelajs.co/api/v1/auth/login", {
       method: "POST",
@@ -66,19 +64,16 @@ function Login() {
       body: JSON.stringify(logindata),
     })
       .then((res) => {
-        console.log("Server javobi:", res.status);
+        console.log(res.status);
         return res.json();
       })
       .then((data) => {
-        console.log("Server ma'lumotlari:", data);
         if (data.access_token) {
           localStorage.setItem("user", JSON.stringify(logindata));
           localStorage.setItem("token", JSON.stringify(data.access_token));
-          console.log("Login muvaffaqiyatli, home page'ga yo'naltirilmoqda");
           toast.success("Login muvaffaqiyatli!");
           navigate("/");
         } else {
-          console.log("Login yoki parolda xato");
           toast.error("Login yoki parolda xato");
         }
       })
@@ -121,8 +116,12 @@ function Login() {
           <Link to={"/forgot-password"}>
             <span className={styles.spann}>Forgot password?</span>
           </Link>
-          <button type="submit" className={styles.signInButton}>
-            Login
+          <button
+            type="submit"
+            className={`${styles.signInButton} ${loading ? styles.disabled : ""}`}
+            disabled={loading}
+          >
+            {loading ? "Loading..." : "Login"}
           </button>
           <Link className={styles.linkk} to="/register">
             Register

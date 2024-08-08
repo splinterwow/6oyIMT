@@ -74,7 +74,6 @@ function Register() {
 
   function handleRegister(event) {
     event.preventDefault();
-
     if (!validate()) {
       return;
     }
