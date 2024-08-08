@@ -165,13 +165,11 @@
 // }
 
 // export default Register;
-
-
 import React, { useRef } from "react";
 import RegPhoto from "../../assets/images/registerphoto2.png";
 import rLogo from "../../assets/images/RegisterSVG.svg";
 import { FcGoogle } from "react-icons/fc";
-import toast, { Toaster } from 'react-hot-toast';
+import toast, { Toaster } from "react-hot-toast";
 import { Link, useNavigate } from "react-router-dom";
 import styles from "./index.module.css";
 
@@ -254,8 +252,6 @@ function Register() {
       password: passwordRef.current.value,
     };
 
-    console.log(userData);
-
     fetch("https://api.escuelajs.co/api/v1/users/", {
       method: "POST",
       headers: {
@@ -266,7 +262,7 @@ function Register() {
       .then((response) => {
         if (!response.ok) {
           return response.json().then((error) => {
-            throw new Error(error.message || 'An error occurred');
+            throw new Error(JSON.stringify(error));
           });
         }
         return response.json();
@@ -276,15 +272,15 @@ function Register() {
         if (data.message) {
           toast.error(`Error: ${data.message}`);
         } else {
-          toast.success("You have successfully registered!");
+          toast.success("You have successfully registered!", { duration: 700 });
           setTimeout(() => {
             navigate("/login");
-          }, 2000); // Delay to allow the toast to be displayed
+          }, 700);
         }
       })
       .catch((error) => {
         console.error("Error:", error);
-        toast.error('An error occurred during registration. Please try again.');
+        toast.error("An error occurred during registration. Please try again.");
       });
   }
 
@@ -301,7 +297,7 @@ function Register() {
         </div>
         <h2>Registration Page</h2>
 
-        <form onSubmit={handleRegister}>
+        <form className={styles.form} onSubmit={handleRegister}>
           <input
             className={styles.input}
             type="text"
@@ -336,15 +332,17 @@ function Register() {
           <button type="submit" className={styles.signInButton}>
             Register
           </button>
-        </form>
 
-        <button className={styles.googleButton}>
-          <FcGoogle className={styles.icon} /> Or sign in with Google
-        </button>
-        <p className={styles.signUp}>
-          Don’t have an account?
-          <Link to={"/login"} style={{ fontFamily: "sans-serif" }}>Login</Link>
-        </p>
+          <button className={styles.googleButton}>
+            <FcGoogle className={styles.icon} /> Or sign in with Google
+          </button>
+          <p className={styles.signUp}>
+            Don’t have an account?
+            <Link to={"/login"} style={{ fontFamily: "sans-serif" }}>
+              Login
+            </Link>
+          </p>
+        </form>
       </div>
     </div>
   );
