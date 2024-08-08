@@ -1,7 +1,4 @@
-
-
-
-import React, { useRef } from "react";
+import React, { useState, useRef } from "react";
 import RegPhoto from "../../assets/images/registerphoto2.png";
 import rLogo from "../../assets/images/RegisterSVG.svg";
 import { FcGoogle } from "react-icons/fc";
@@ -15,6 +12,7 @@ function Register() {
   const photourlRef = useRef(null);
   const passwordRef = useRef(null);
   const repeatPasswordRef = useRef(null);
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   function validate() {
@@ -81,6 +79,8 @@ function Register() {
       return;
     }
 
+    setLoading(true);
+
     const userData = {
       name: usernameRef.current.value,
       avatar: photourlRef.current.value,
@@ -116,6 +116,9 @@ function Register() {
       .catch((error) => {
         console.error("Error:", error);
         toast.error("An error occurred during registration. Please try again.");
+      })
+      .finally(() => {
+        setLoading(false);
       });
   }
 
@@ -164,8 +167,12 @@ function Register() {
             placeholder="Repeat password"
           />
 
-          <button type="submit" className={styles.signInButton}>
-            Register
+          <button
+            type="submit"
+            className={styles.signInButton}
+            disabled={loading}
+          >
+            {loading ? "Loading..." : "Register"}
           </button>
 
           <button className={styles.googleButton}>
