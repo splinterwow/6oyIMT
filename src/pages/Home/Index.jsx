@@ -4,29 +4,40 @@ import merc from "../../assets/images/merc.webp";
 import bmw from "../../assets/images/bmw.webp";
 import { Link, useNavigate } from "react-router-dom";
 import { FaTimes } from 'react-icons/fa';
-import { Toaster } from "react-hot-toast";
+import { Toaster, toast } from "react-hot-toast";
 
 function Home() {
   const [cards, setCards] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
 
-  const nameRef = useRef("");
-  const yearRef = useRef("");
-  const priceRef = useRef("");
-  const colorRef = useRef("");
+  const nameRef = useRef(null);
+  const yearRef = useRef(null);
+  const priceRef = useRef(null);
+  const colorRef = useRef(null);
 
   useEffect(() => {
-    const savedCards = JSON.parse(localStorage.getItem("cards"));
-    if (savedCards) {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      navigate("/login");
+    } else {
+      const savedCards = JSON.parse(localStorage.getItem("cards") || "[]");
       setCards(savedCards);
+      setIsLoading(false);
+      // Xush kelibsiz xabarini ko'rsatish
+      toast.success("AvtoHub sahifasiga xush kelibsiz!", {
+        duration: 3000,
+        icon: '👋',
+      });
     }
-  }, []);
+  }, [navigate]);
 
   function handleLogout() {
-    // localStorage.removeItem("token");
-    // localStorage.removeItem("user");
-    navigate("/login")
-    window.location.reload();
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    localStorage.removeItem("cards");
+    toast.success("Muvaffaqiyatli chiqish amalga oshirildi");
+    navigate("/login");
   }
 
   function handleSave(event) {
@@ -37,7 +48,7 @@ function Home() {
     const color = colorRef.current.value;
 
     if (!name || !year || !price || !color) {
-      alert("Please fill out all fields.");
+      toast.error("Iltimos, barcha maydonlarni to'ldiring.");
       return;
     }
 
@@ -57,12 +68,19 @@ function Home() {
     yearRef.current.value = "";
     priceRef.current.value = "";
     colorRef.current.value = "";
+
+    toast.success("Yangi avtomobil muvaffaqiyatli qo'shildi");
   }
 
   function handleDelete(index) {
     const updatedCards = cards.filter((_, i) => i !== index);
     setCards(updatedCards);
     localStorage.setItem("cards", JSON.stringify(updatedCards));
+    toast.success("Avtomobil muvaffaqiyatli o'chirildi");
+  }
+
+  if (isLoading) {
+    return <div className={styles.loading}>Yuklanmoqda...</div>;
   }
 
   return (
@@ -73,28 +91,28 @@ function Home() {
             <h1>AvtoHub</h1>
           </Link>
           <button onClick={handleLogout} className={styles.logout}>
-            Logout
+            Chiqish
           </button>
         </div>
         <form onSubmit={handleSave}>
-          <label htmlFor="carname">Name*</label>
-          <input ref={nameRef} type="text" id="carname" placeholder="Enter car name" />
-          <label htmlFor="caryear">Year*</label>
-          <input ref={yearRef} type="text" id="caryear" placeholder="Enter car year" />
-          <label htmlFor="carprice">Price*</label>
-          <input ref={priceRef} type="number" id="carprice" placeholder="Enter car price" />
-          <label htmlFor="carcolor">Color*</label>
-          <input ref={colorRef} type="text" id="carcolor" placeholder="Enter car color" />
-          <button type="submit" className={styles.save}>SAVE</button>
+          <label htmlFor="carname">Nomi*</label>
+          <input ref={nameRef} type="text" id="carname" placeholder="Avtomobil nomini kiriting" />
+          <label htmlFor="caryear">Yili*</label>
+          <input ref={yearRef} type="text" id="caryear" placeholder="Avtomobil yilini kiriting" />
+          <label htmlFor="carprice">Narxi*</label>
+          <input ref={priceRef} type="number" id="carprice" placeholder="Avtomobil narxini kiriting" />
+          <label htmlFor="carcolor">Rangi*</label>
+          <input ref={colorRef} type="text" id="carcolor" placeholder="Avtomobil rangini kiriting" />
+          <button type="submit" className={styles.save}>SAQLASH</button>
         </form>
         <div className={styles.cards}>
           {cards.map((card, index) => (
             <div key={index} className={styles.card}>
               {card.imageUrl && <img src={card.imageUrl} alt={card.name} className={styles.cardImage} />}
-              <h3>Carname: <b style={{fontWeight: "600"}}>{card.name}</b></h3>
-              <p>Year: {card.year}</p>
-              <p>Price: {card.price}$</p>
-              <p>Color: {card.color}</p>
+              <h3>Nomi: <b style={{fontWeight: "600"}}>{card.name}</b></h3>
+              <p>Yili: {card.year}</p>
+              <p>Narxi: {card.price}$</p>
+              <p>Rangi: {card.color}</p>
               <button onClick={() => handleDelete(index)} className={styles.deleteButton}>
                 <FaTimes className={styles.deleteIcon} />
               </button>
@@ -102,7 +120,7 @@ function Home() {
           ))}
         </div>
       </div>
-      <Toaster />
+      <Toaster position="top-right" />
     </>
   );
 }

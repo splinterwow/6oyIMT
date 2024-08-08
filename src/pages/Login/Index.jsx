@@ -1,8 +1,9 @@
-// // Login.js
 // import React, { useRef } from "react";
 // import rFoto from "../../assets/images/RegisterPhoto.png";
 // import rLogo from "../../assets/images/RegisterSVG.svg";
+// import toast, { Toaster } from "react-hot-toast";
 // import { Link, useNavigate } from "react-router-dom";
+// import ToggleSwitch from "../../components/ToggleSwitch";
 // import styles from "./index.module.css";
 
 // function Login() {
@@ -12,17 +13,17 @@
 
 //   function validate() {
 //     const email = emailRef.current.value;
-//     if (!email.includes('@')) {
-//       alert('Togri email kiriting');
+//     if (!email.includes("@")) {
+//       toast.error("Togri email kiriting", { duration: 700 });
 //       emailRef.current.focus();
-//       emailRef.current.style.outlineColor = 'red';
+//       emailRef.current.style.outlineColor = "red";
 //       return false;
 //     }
 //     const password = passwordRef.current.value;
 //     if (password.length < 4) {
-//       alert('Parol 4 ta bolishi kerak');
+//       toast.error("Parol 4 ta bolishi kerak", { duration: 700 });
 //       passwordRef.current.focus();
-//       passwordRef.current.style.outlineColor = 'red';
+//       passwordRef.current.style.outlineColor = "red";
 //       return false;
 //     }
 //     return true;
@@ -36,40 +37,29 @@
 //     }
 //     const logindata = {
 //       email: emailRef.current.value,
-//       password: passwordRef.current.value
+//       password: passwordRef.current.value,
 //     };
 
-//     console.log("Login data:", logindata);
-
 //     fetch("https://api.escuelajs.co/api/v1/auth/login", {
-//       method: 'POST',
+//       method: "POST",
 //       headers: {
-//         'Content-Type': 'application/json'
+//         "Content-Type": "application/json",
 //       },
-//       body: JSON.stringify(logindata)
+//       body: JSON.stringify(logindata),
 //     })
-//       .then(response => {
-//         if (!response.ok) {
-//           return response.json().then(error => {
-//             throw new Error(error.message || 'Xato yuz berdi');
-//           });
-//         }
-//         return response.json();
-//       })
-//       .then(data => {
-//         // console.log("Olingan malumot:", data);
+//       .then((res) => res.json())
+//       .then((data) => {
 //         if (data.access_token) {
-//           localStorage.setItem('user', JSON.stringify(logindata));
-//           localStorage.setItem('token', JSON.stringify(data.access_token));
-//           // console.log("Navigating to home page");
-//           navigate('/');
+//           localStorage.setItem("user", JSON.stringify(logindata));
+//           localStorage.setItem("token", JSON.stringify(data.access_token));
+//           navigate("/");
 //         } else {
-//           console.log('Login yoki parolda xato');
+//           console.log("Login yoki parolda xato");
 //         }
 //       })
-//       .catch(error => {
-//         alert('email yoki parolda xato.');
-//         console.error('Xato:', error);
+//       .catch((error) => {
+//         toast.error("Email yoki parolda xato.");
+//         console.log(error);
 //       });
 //   }
 
@@ -84,7 +74,7 @@
 //           <h2>UI Unicorn</h2>
 //         </div>
 //         <h2>Nice to see you again</h2>
-//         <form onSubmit={handleLogin}>
+//         <form className={styles.form} onSubmit={handleLogin}>
 //           <label htmlFor="email">Email*</label>
 //           <input
 //             ref={emailRef}
@@ -99,19 +89,29 @@
 //             type="password"
 //             placeholder="Enter password"
 //           />
+//           <ToggleSwitch /> <p className={styles.parag}>Remember me</p>{" "}
+//           <Link to={"/register"}>
+//             <span className={styles.spann}>Forgot password?</span>
+//           </Link>
 //           <button type="submit" className={styles.signInButton}>
 //             Login
 //           </button>
+//           <Link className={styles.linkk} to="/register">
+//             Register
+//           </Link>
 //         </form>
-//         <Link className={styles.linkk} to="/register">Register</Link>
 //       </div>
+//       <Toaster />
 //     </div>
 //   );
 // }
 
 // export default Login;
 
-import React, { useEffect, useRef } from "react";
+
+
+
+import React, { useRef, useEffect } from "react";
 import rFoto from "../../assets/images/RegisterPhoto.png";
 import rLogo from "../../assets/images/RegisterSVG.svg";
 import toast, { Toaster } from "react-hot-toast";
@@ -123,19 +123,27 @@ function Login() {
   const navigate = useNavigate();
   const emailRef = useRef(null);
   const passwordRef = useRef(null);
-  const label = { inputProps: { "aria-label": "Checkbox demo" } };
+
+  useEffect(() => {
+    // Sahifa yuklanganda token borligini tekshirish
+    const token = localStorage.getItem("token");
+    if (token) {
+      console.log("Token mavjud, home page'ga yo'naltirilmoqda");
+      navigate("/");
+    }
+  }, [navigate]);
 
   function validate() {
     const email = emailRef.current.value;
     if (!email.includes("@")) {
-      toast.error("Togri email kiriting", { duration: 700 });
+      toast.error("To'g'ri email kiriting", { duration: 700 });
       emailRef.current.focus();
       emailRef.current.style.outlineColor = "red";
       return false;
     }
     const password = passwordRef.current.value;
     if (password.length < 4) {
-      toast.error("Parol 4 ta bolishi kerak", { duration: 700 });
+      toast.error("Parol kamida 4 ta belgidan iborat bo'lishi kerak", { duration: 700 });
       passwordRef.current.focus();
       passwordRef.current.style.outlineColor = "red";
       return false;
@@ -145,14 +153,19 @@ function Login() {
 
   function handleLogin(event) {
     event.preventDefault();
+    console.log("Login jarayoni boshlandi");
 
     if (!validate()) {
+      console.log("Validatsiya muvaffaqiyatsiz");
       return;
     }
+
     const logindata = {
       email: emailRef.current.value,
       password: passwordRef.current.value,
     };
+
+    console.log("Login ma'lumotlari:", logindata);
 
     fetch("https://api.escuelajs.co/api/v1/auth/login", {
       method: "POST",
@@ -160,19 +173,27 @@ function Login() {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(logindata),
-    }).then(res => res.json()).then((data) => {
-      if (data.access_token) {
-        console.log(data.access_token)
-        localStorage.setItem("user", JSON.stringify(logindata));
-        localStorage.setItem("token", JSON.stringify(data.access_token));
-        navigate("/");
-      } else {
-        console.log("Login yoki parolda xato");
-      }
     })
-    .catch((error) => {
-        toast.error("Email yoki parolda xato.");
-        console.log(error);
+      .then((res) => {
+        console.log("Server javobi:", res.status);
+        return res.json();
+      })
+      .then((data) => {
+        console.log("Server ma'lumotlari:", data);
+        if (data.access_token) {
+          localStorage.setItem("user", JSON.stringify(logindata));
+          localStorage.setItem("token", JSON.stringify(data.access_token));
+          console.log("Login muvaffaqiyatli, home page'ga yo'naltirilmoqda");
+          toast.success("Login muvaffaqiyatli!");
+          navigate("/");
+        } else {
+          console.log("Login yoki parolda xato");
+          toast.error("Login yoki parolda xato");
+        }
+      })
+      .catch((error) => {
+        console.error("Login xatosi:", error);
+        toast.error("Serverga ulanishda xatolik yuz berdi.");
       });
   }
 
@@ -202,9 +223,10 @@ function Login() {
             type="password"
             placeholder="Enter password"
           />
-
-          <ToggleSwitch /> <p className={styles.parag}>Remember me</p> <Link to={"/register"}><span className={styles.spann}>Forgot password?</span></Link>
-
+          <ToggleSwitch /> <p className={styles.parag}>Remember me</p>{" "}
+          <Link to={"/forgot-password"}>
+            <span className={styles.spann}>Forgot password?</span>
+          </Link>
           <button type="submit" className={styles.signInButton}>
             Login
           </button>
