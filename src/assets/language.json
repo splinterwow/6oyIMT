@@ -1,0 +1,65 @@
+{
+  "en": {
+    "translation": {
+      "welcomeMessage": "Welcome to AvtoHub!",
+      "logoutSuccess": "Logged out successfully",
+      "fillAllFields": "Please fill all fields.",
+      "carAdded": "New car added successfully",
+      "carDeleted": "Car deleted successfully",
+      "languageChanged": "Language changed successfully",
+      "logout": "Logout",
+      "name": "Name",
+      "year": "Year",
+      "price": "Price",
+      "color": "Color",
+      "enterCarName": "Enter car name",
+      "enterCarYear": "Enter car year",
+      "enterCarPrice": "Enter car price",
+      "enterCarColor": "Enter car color",
+      "save": "SAVE",
+      "loading": "Loading..."
+    }
+  },
+  "uz": {
+    "translation": {
+      "welcomeMessage": "AvtoHub sahifasiga xush kelibsiz!",
+      "logoutSuccess": "Muvaffaqiyatli chiqish amalga oshirildi",
+      "fillAllFields": "Iltimos, barcha maydonlarni to'ldiring.",
+      "carAdded": "Yangi avtomobil muvaffaqiyatli qo'shildi",
+      "carDeleted": "Avtomobil muvaffaqiyatli o'chirildi",
+      "languageChanged": "Til muvaffaqiyatli o'zgartirildi",
+      "logout": "Chiqish",
+      "name": "Nomi",
+      "year": "Yili",
+      "price": "Narxi",
+      "color": "Rangi",
+      "enterCarName": "Avtomobil nomini kiriting",
+      "enterCarYear": "Avtomobil yilini kiriting",
+      "enterCarPrice": "Avtomobil narxini kiriting",
+      "enterCarColor": "Avtomobil rangini kiriting",
+      "save": "SAQLASH",
+      "loading": "Yuklanmoqda..."
+    }
+  },
+  "ru": {
+    "translation": {
+      "welcomeMessage": "Добро пожаловать в AvtoHub!",
+      "logoutSuccess": "Выход выполнен успешно",
+      "fillAllFields": "Пожалуйста, заполните все поля.",
+      "carAdded": "Новый автомобиль успешно добавлен",
+      "carDeleted": "Автомобиль успешно удален",
+      "languageChanged": "Язык успешно изменен",
+      "logout": "Выход",
+      "name": "Название",
+      "year": "Год",
+      "price": "Цена",
+      "color": "Цвет",
+      "enterCarName": "Введите название автомобиля",
+      "enterCarYear": "Введите год автомобиля",
+      "enterCarPrice": "Введите цену автомобиля",
+      "enterCarColor": "Введите цвет автомобиля",
+      "save": "СОХРАНИТЬ",
+      "loading": "Загрузка..."
+    }
+  }
+}

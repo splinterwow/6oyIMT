@@ -2,6 +2,7 @@ import React from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import Home from "./pages/Home/Index";
 import ErrorPage from "./pages/ErrorPage/Index";
+import './i18n';
 import Login from "./pages/Login/Index";
 import Register from "./pages/Register/Index";
 

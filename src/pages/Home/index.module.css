@@ -36,7 +36,7 @@
 }
 
 .logout {
-  margin-left: auto;
+  margin-left: 930px;
   cursor: pointer;
   padding: 14px;
   width: 120px;
@@ -50,9 +50,30 @@
   transition: all 0.3s;
 }
 
+.langSelect {
+  margin-left: 820px;
+  position: absolute;
+  top: 20px;
+  padding: 8px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  background-color: #fff;
+  font-size: 14px;
+  cursor: pointer;
+}
+
 .logout:hover {
   background: #8c23a4;
 }
+
+.userPhoto {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: 10px;
+}
+
 
 form {
   position: absolute;
@@ -128,7 +149,8 @@ form input {
   margin-bottom: 10px;
 }
 
-.card h3, .card p {
+.card h3,
+.card p {
   margin: 0;
   font-size: 16px; /* Kichikroq matn hajmi */
   color: #333;
